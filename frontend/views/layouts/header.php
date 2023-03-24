@@ -3,6 +3,7 @@ use common\models\User;
 
 $user = Yii::$app->user->identity;
 $settings = \common\models\Settings::find()->one();
+$action = Yii::$app->controller->action->id;
 ?>
 
 <div class="loader"></div>
@@ -33,7 +34,7 @@ $settings = \common\models\Settings::find()->one();
                 </p>
             </li>
             <?foreach (Yii::$app->params['menuItems'] as $item):?>
-                <li class="header-item active"><a href="/<?=$item['url']?>"><?=$item['name'];?></a></li>
+                <li class="header-item <?=$action == $item['id'] ? 'active' : '';?>"><a href="/<?=$item['url']?>"><?=$item['name'];?></a></li>
             <?endforeach;?>
         </nav>
         <div class="log">
@@ -60,7 +61,6 @@ $settings = \common\models\Settings::find()->one();
                         </div>
                         <span class="user-fio d-none d-lg-block"><?= $user ? $user->getShortFio():''?></span>
                         <div class="header-user__select">
-                            <a class="header-select__item" href="/profile/index">Личный кабинет</a>
                             <a class="header-select__item" href="/auth/logout" data-method="post">Выйти</a>
                         </div>
                     </div>

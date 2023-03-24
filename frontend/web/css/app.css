@@ -125,7 +125,7 @@ section{
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #0CA984;
+    background: #3898ec;
     border-radius: 50%;
 }
 p{
@@ -277,6 +277,9 @@ header{
 }
 .header-nav.active{
     transform: translateX(0px);
+}
+.header-item.active{
+    border-bottom: 2px solid #3898ec;
 }
 .header-item{
     margin: 0 12px;
