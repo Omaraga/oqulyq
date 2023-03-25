@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use backend\controllers\PartnersController;
 use common\models\City;
 use common\models\Course;
+use common\models\Dictionary;
 use common\models\News;
 use common\models\Partners;
 use common\models\Region;
@@ -12,7 +13,9 @@ use common\models\School;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
+use yii\base\BaseObject;
 use yii\base\InvalidArgumentException;
+use yii\data\ActiveDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
 use yii\web\BadRequestHttpException;
@@ -53,20 +56,41 @@ class SiteController extends Controller
         return $this->render('index', [
         ]);
     }
-    /**
-     * @return mixed
-     * обрезает текст по количеству слов
-     * $val = количество выводимых слов
-     * $text = получаемый текст для обрезки
-     */
-    public static function getShortText($text, $val=null){
-        if (!$val) {
-            $val = 15;
+
+    public function actionDictionary(){
+
+        $search = Yii::$app->request->get('search');
+        $query = Dictionary::find()->where(['type' => Dictionary::TYPE_WORD])->orderBy('ru');
+        if ($search && strlen(trim($search)) > 0){
+            $search = trim($search);
+            $query = $query->andWhere(["LIKE", "LOWER(ru)", mb_strtolower($search, "UTF-8")]);
         }
-        $array = explode(" ", strip_tags($text));
-        $array = array_slice($array, 0, $val);
-        return implode(" ", $array) . '...';
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        return $this->render('dictionary',[
+            'dataProvider' => $dataProvider,
+            'search' => $search
+        ]);
     }
+
+    public function actionFraze(){
+
+        $search = Yii::$app->request->get('search');
+        $query = Dictionary::find()->where(['type' => Dictionary::TYPE_FRAZE])->orderBy('ru');
+        if ($search && strlen(trim($search)) > 0){
+            $search = trim($search);
+            $query = $query->andWhere(["LIKE", "LOWER(ru)", mb_strtolower($search, "UTF-8")]);
+        }
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        return $this->render('fraze',[
+            'dataProvider' => $dataProvider,
+            'search' => $search
+        ]);
+    }
+
     /**
      * @return mixed
      */

@@ -262,6 +262,15 @@ header{
     background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
 }
+.container .table-bordered th, .table-bordered td {
+    border: none;
+}
+.container .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #fff;
+}
+.container .table-striped tbody tr {
+    border-bottom: 1px solid #3898ec;
+}
 .header{
     width: 90%;
     height: 78px;
