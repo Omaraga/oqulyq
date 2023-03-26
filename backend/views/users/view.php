@@ -6,45 +6,53 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model common\models\User */
 
-$this->title = $model->getShortFio();
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Users'), 'url' => ['index']];
+$this->title = $model->first_name;
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Пользователи'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="user-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Изменить'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Удалить'), ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
-                'method' => 'post',
-            ],
-        ]) ?>
+        <?if(\common\models\User::isAccess(\common\models\User::ROLE_ADMIN)):?>
+            <?= Html::a(Yii::t('app', 'Редактировать'), ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
+            <?= Html::a(Yii::t('app', 'Удалить'), ['delete', 'id' => $model->id], [
+                'class' => 'btn btn-danger',
+                'data' => [
+                    'confirm' => Yii::t('app', 'Are you sure you want to delete this item?'),
+                    'method' => 'post',
+                ],
+            ]) ?>
+
+        <?endif;?>
     </p>
 
     <?= DetailView::widget([
         'model' => $model,
+        'formatter' => [
+
+            'class' => '\yii\i18n\Formatter',
+
+            'dateFormat' => 'dd.MM.yyyy',
+
+            'datetimeFormat' => 'dd.MM.yyyy HH:mm',
+
+        ],
         'attributes' => [
             'id',
             'username',
-            'auth_key',
-//            'password_hash',
-//            'password_reset_token',
             'email:email',
-            'status',
-            'created_at',
-            'updated_at',
-//            'verification_token',
-            'system_role',
-            'info:ntext',
+            'created_at:datetime',
+            [
+                'attribute' => 'system_role',
+                'value' => function($data){
+                    return $data->getRoleName();
+                }
+            ],
             'first_name',
             'last_name',
             'middle_name',
-            'school_grade_id',
         ],
     ]) ?>
 

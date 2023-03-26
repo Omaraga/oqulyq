@@ -6,11 +6,11 @@ use yii\helpers\Html;
 /* @var $model common\models\RoadMap */
 
 $this->title = Yii::t('app', 'Редактировать {modelLabel}: {name}', [
-    'name' => $model->ru,
+    'name' => $model->id,
     'modelLabel' => Yii::$app->controller->modelLabel
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::$app->controller->modelLabel, 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->ru, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = ['label' => $model->id, 'url' => ['view', 'id' => $model->id]];
 $this->params['breadcrumbs'][] = Yii::t('app', 'Редактировать');
 ?>
 <div class="news-update">

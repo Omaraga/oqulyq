@@ -7,12 +7,13 @@
 
 use yii\helpers\Url;
 $settings = \common\models\Settings::find()->one();
-
+$this->title = 'Фразы';
 
 ?>
 <main class="landing container">
+    <h1 class="my-3 text-center">Фразы</h1>
     <div class="row">
-        <div class="col-12 mt-5">
+        <div class="col-12 mt-2">
             <form action="/site/fraze" method="get" class="row">
                 <div class="col-10">
                     <input type="text" name="search" class="form-control" value="<?=$search;?>">

@@ -3,13 +3,16 @@
 namespace frontend\controllers;
 
 use backend\controllers\PartnersController;
+use common\models\Book;
 use common\models\City;
 use common\models\Course;
 use common\models\Dictionary;
+use common\models\Lesson;
 use common\models\News;
 use common\models\Partners;
 use common\models\Region;
 use common\models\School;
+use common\models\Video;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -53,11 +56,14 @@ class SiteController extends Controller
         if (Yii::$app->user->isGuest){
             return $this->redirect('/auth/login');
         }
+        $lessons = Lesson::find()->orderBy('sort')->all();
         return $this->render('index', [
+            'lessons' => $lessons
         ]);
     }
 
     public function actionDictionary(){
+
 
         $search = Yii::$app->request->get('search');
         $query = Dictionary::find()->where(['type' => Dictionary::TYPE_WORD])->orderBy('ru');
@@ -88,6 +94,32 @@ class SiteController extends Controller
         return $this->render('fraze',[
             'dataProvider' => $dataProvider,
             'search' => $search
+        ]);
+    }
+
+    public function actionBooks(){
+        $search = Yii::$app->request->get('search');
+        $query = Book::find()->orderBy('name');
+        if ($search && strlen(trim($search)) > 0){
+            $search = trim($search);
+            $query = $query->andWhere(["LIKE", "LOWER(name)", mb_strtolower($search, "UTF-8")]);
+        }
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        return $this->render('books',[
+            'dataProvider' => $dataProvider,
+            'search' => $search
+        ]);
+    }
+
+    public function actionVideo(){
+        $query = Video::find();
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+        return $this->render('video',[
+            'dataProvider' => $dataProvider,
         ]);
     }
 

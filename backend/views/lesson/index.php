@@ -6,27 +6,19 @@ use yii\grid\ActionColumn;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $type string */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 $this->title  = Yii::$app->controller->modelLabel;
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="news-index">
     <p>
-        <?= Html::a(Yii::t('app', 'Создать'), ['create', 'type' => $type], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Создать'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <ul class="nav nav-pills my-3">
-        <?foreach (\common\models\Dictionary::getTypes() as $item => $value):?>
-            <li class="nav-item">
-                <a class="nav-link <?=$type == $item? 'active':'';?>" href="<?=\yii\helpers\Url::to(['dictionary/index', 'type' => $item]);?>"><?=$value;?></a>
-            </li>
-        <?endforeach;?>
-    </ul>
 
-
-    <?= GridView::widget([
+    <?= \richardfan\sortable\SortableGridView::widget([
         'dataProvider' => $dataProvider,
+        'sortUrl' => Url::to(['sortItem']),
         'formatter' => [
 
             'class' => '\yii\i18n\Formatter',
@@ -38,19 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'ru',
-            'kz',
-            [
-                'attribute' => 'lesson_id',
-                'value' => function($data){
-                    return $data->lesson->title;
-                }
-            ],
+            'title',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action,  $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
     ]); ?>

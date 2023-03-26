@@ -11,32 +11,19 @@ use yii\web\UploadedFile;
  * This is the model class for table "dictionary".
  *
  * @property int $id
- * @property string|null $info
- * @property int|null $type
- * @property Module[]|null $modules
- * @property string $ru
- * @property string $kz
+ * @property string $question
+ * @property string $right_answer
+ * @property string $wrong_answer_1
+ * @property string $wrong_answer_2
+ * @property string $wrong_answer_3
  * @property int $lesson_id [int(11)]
  */
-class Dictionary extends ActiveRecord
+class Test extends ActiveRecord
 {
-    use AttributesToInfoTrait;
-
-    const TYPE_WORD = 1;
-    const TYPE_FRAZE = 2;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function attributesToInfo()
-    {
-        return [
-        ];
-    }
 
     public static function tableName()
     {
-        return 'dictionary';
+        return 'test';
     }
 
 
@@ -46,8 +33,8 @@ class Dictionary extends ActiveRecord
     public function rules()
     {
         return [
-            [['ru', 'kz', 'type'], 'required'],
-            [['lesson_id'], 'safe']
+            [['question', 'right_answer', 'wrong_answer_1', 'lesson_id'], 'required'],
+            [['wrong_answer_2', 'wrong_answer_3'], 'safe']
 
         ];
     }
@@ -58,16 +45,6 @@ class Dictionary extends ActiveRecord
         return parent::save($runValidation, $attributeNames);
     }
 
-    /**
-     * @return array
-     */
-    public static function getTypes()
-    {
-        return [
-            self::TYPE_WORD => Yii::t('app', 'Слова'),
-            self::TYPE_FRAZE => Yii::t('app', 'Фразы'),
-        ];
-    }
 
     public function getLesson(){
         return $this->hasOne(Lesson::className(), ['id' => 'lesson_id']);
@@ -81,9 +58,11 @@ class Dictionary extends ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'ru' => Yii::t('app', 'Руский'),
-            'kz' => Yii::t('app', 'Казахский'),
-            'type' => Yii::t('app', 'Тип'),
+            'question' => Yii::t('app', 'Вопрос'),
+            'right_answer' => Yii::t('app', 'Правильный ответ'),
+            'wrong_answer_1' => Yii::t('app', 'Не правильный ответ'),
+            'wrong_answer_2' => Yii::t('app', 'Не правильный ответ'),
+            'wrong_answer_3' => Yii::t('app', 'Не правильный ответ'),
             'lesson_id' => Yii::t('app', 'Урок'),
 
         ];

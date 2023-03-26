@@ -13,16 +13,8 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="news-index">
     <p>
-        <?= Html::a(Yii::t('app', 'Создать'), ['create', 'type' => $type], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Создать'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-
-    <ul class="nav nav-pills my-3">
-        <?foreach (\common\models\Dictionary::getTypes() as $item => $value):?>
-            <li class="nav-item">
-                <a class="nav-link <?=$type == $item? 'active':'';?>" href="<?=\yii\helpers\Url::to(['dictionary/index', 'type' => $item]);?>"><?=$value;?></a>
-            </li>
-        <?endforeach;?>
-    </ul>
 
 
     <?= GridView::widget([
@@ -38,8 +30,8 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            'ru',
-            'kz',
+            'question',
+            'right_answer',
             [
                 'attribute' => 'lesson_id',
                 'value' => function($data){

@@ -42,7 +42,7 @@ class Book extends ActiveRecord
     {
         return [
             [['file'], 'file','extensions' => ['png', 'jpg', 'gif', 'PNG', 'JPG', 'GIF', 'JPEG', 'jpeg'],],
-            [['url', 'image', 'name'], 'string', 'max' => 255],
+            [['url', 'img', 'name'], 'string', 'max' => 255],
         ];
     }
     /**
@@ -81,12 +81,11 @@ class Book extends ActiveRecord
     {
         return [
             'id' => Yii::t('app', 'ID'),
-            'title' => Yii::t('app', 'Заголовок'),
-            'content' => Yii::t('app', 'Содержание'),
-            'created_at' => Yii::t('app', 'Дата публикации'),
-            'updated_at' => Yii::t('app', 'Дата изменения'),
+            'name' => Yii::t('app', 'Название'),
+            'url' => Yii::t('app', 'Ссылка на учебник'),
             'status' => Yii::t('app', 'Статус'),
-            'image' => Yii::t('app', 'Картинка'),
+            'img' => Yii::t('app', 'Обложка'),
+            'file' => Yii::t('app', 'Обложка'),
         ];
     }
 }

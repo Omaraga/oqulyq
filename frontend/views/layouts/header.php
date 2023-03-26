@@ -34,7 +34,7 @@ $action = Yii::$app->controller->action->id;
                 </p>
             </li>
             <?foreach (Yii::$app->params['menuItems'] as $item):?>
-                <li class="header-item <?=$action == $item['id'] ? 'active' : '';?>"><a href="/<?=$item['url']?>"><?=$item['name'];?></a></li>
+                <li class="header-item <?=$action == $item['id'] ? 'active' : '';?>"><a href="/<?=$item['url']?>" style="font-weight: 400;"><?=$item['name'];?></a></li>
             <?endforeach;?>
         </nav>
         <div class="log">

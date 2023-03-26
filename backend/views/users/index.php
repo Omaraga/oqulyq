@@ -14,25 +14,31 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
+    <p>
+        <?= Html::a(Yii::t('app', 'Создать пользователя'), ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
 
-            'username',
-            'email:email',
+            'id',
+            [
+                'attribute' =>'email',
+                'value' => function($data){
+                    return Html::a($data->email, ['users/view', 'id' => $data->id]);
+                },
+                'format' => 'raw',
+            ],
             'first_name',
             'last_name',
-            'middle_name',
-            'birthday',
-            'sex',
             [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, User $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                'attribute' => 'system_role',
+                'value' => function($data){
+                    return $data->getRoleName();
+                }
             ],
+
         ],
     ]); ?>
 

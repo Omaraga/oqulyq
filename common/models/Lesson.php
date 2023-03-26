@@ -12,16 +12,10 @@ use common\components\ActiveRecord;
  * @property string|null $title
  * @property string|null $content
  * @property int|null $type
- * @property int $course_id
- * @property int $module_id
  * @property int $sort
  * @property string|null $info
- * @property string|null $source
- * @property string|null $vimeo_link
  * @property int|null $is_deleted
  *
- * @property Course $course
- * @property Module $module
  */
 class Lesson extends ActiveRecord
 {
@@ -43,7 +37,6 @@ class Lesson extends ActiveRecord
     {
         return [
             'source',
-            'vimeo_link'
         ];
     }
 
@@ -53,14 +46,11 @@ class Lesson extends ActiveRecord
     public function rules()
     {
         return [
-            [['content', 'info', 'source','vimeo_link'], 'string'],
-            [['type', 'course_id', 'module_id', 'is_deleted'], 'integer'],
-            [['course_id', 'module_id'], 'required'],
+            [['content'], 'string'],
+            [['type', 'is_deleted'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['course_id'], 'exist', 'skipOnError' => true, 'targetClass' => Course::className(), 'targetAttribute' => ['course_id' => 'id']],
-            [['module_id'], 'exist', 'skipOnError' => true, 'targetClass' => Module::className(), 'targetAttribute' => ['module_id' => 'id']],
             [['sort'], 'default', 'value' => function ($model, $attribute) {
-                return self::find()->where(['module_id' => $model->module_id])->count();
+                return self::find()->count();
             }],
         ];
     }
@@ -75,32 +65,16 @@ class Lesson extends ActiveRecord
             'title' => Yii::t('app', 'Название'),
             'content' => Yii::t('app', 'Описание'),
             'type' => Yii::t('app', 'Тип'),
-            'course_id' => Yii::t('app', 'Course ID'),
-            'module_id' => Yii::t('app', 'Module ID'),
             'info' => Yii::t('app', 'Info'),
             'is_deleted' => Yii::t('app', 'Is Deleted'),
             'source' => Yii::t('app', 'Урок'),
         ];
     }
-
-    /**
-     * Gets query for [[Course]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCourse()
+    public function getShortContent()
     {
-        return $this->hasOne(Course::className(), ['id' => 'course_id']);
-    }
-
-    /**
-     * Gets query for [[Module]].
-     *
-     * @return \yii\db\ActiveQuery
-     */
-    public function getModule()
-    {
-        return $this->hasOne(Module::className(), ['id' => 'module_id']);
+        $s = $this->content;
+        $s = strip_tags($s);
+        return (mb_strlen($s, 'UTF-8') > 150 ? mb_substr($s, 0, 147, 'UTF-8') . '...' : $s);
     }
 
     /**
@@ -115,16 +89,4 @@ class Lesson extends ActiveRecord
 
     }
 
-    public function getFrame(){
-        $frame = null;
-        if(!empty($this->vimeo_link)){
-
-            $link = $this->vimeo_link;
-            $link = explode("/",$link);
-            $link = $link[count($link)-1];
-            $frame = '<iframe title="vimeo-player" src="https://player.vimeo.com/video/'.$link.'" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>';
-
-        }
-        return $frame;
-    }
 }
