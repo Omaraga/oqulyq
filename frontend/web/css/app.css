@@ -38,7 +38,7 @@ p{
 }
 
 body{
-    background: #fff;
+    background: #afe9e9;
     font-size: 16px;
 }
 li{
@@ -130,7 +130,7 @@ section{
 }
 p{
     font-weight: 400;
-    font-size: 16px;
+    font-size: 14px;
     line-height: 140%;
 }
 h1{
@@ -259,7 +259,7 @@ h1{
     padding: 12px;
 }
 header{
-    background: #FFFFFF;
+    background: #afe9e9;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
 }
 .container .table-bordered th, .table-bordered td {

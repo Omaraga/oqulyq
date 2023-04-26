@@ -73,7 +73,9 @@ class Lesson extends ActiveRecord
     public function getShortContent()
     {
         $s = $this->content;
-        $s = strip_tags($s);
+        $s = trim(strip_tags($s));
+//        $s = preg_replace('/\s+/', ' ', $s);
+        $s = str_replace("&nbsp;", '', $s);
         return (mb_strlen($s, 'UTF-8') > 150 ? mb_substr($s, 0, 147, 'UTF-8') . '...' : $s);
     }
 
