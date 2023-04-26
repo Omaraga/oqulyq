@@ -23,7 +23,7 @@ $i = 1;
         <div class="col-12 mt-2">
             <div class="row p-3">
                 <?foreach ($lessons as $lesson):?>
-                    <div class="col-4 mb-4">
+                    <div class="col-sm-4 col-12 mb-4">
                         <div class="card p-3" style="background-color: rgba(243, 246, 252, 0.75);border-radius: 20px;border: none;min-height: 250px;">
                             <h5 style="font-weight: 500;"><?=$lesson->title;?></h5>
                             <p class="mt-2"><?=strip_tags($lesson->getShortContent());?></p>
