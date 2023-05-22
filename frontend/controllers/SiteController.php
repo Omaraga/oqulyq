@@ -64,9 +64,12 @@ class SiteController extends Controller
 
     public function actionDictionary(){
 
-
+        $lessonId = Yii::$app->request->get('lesson');
         $search = Yii::$app->request->get('search');
         $query = Dictionary::find()->where(['type' => Dictionary::TYPE_WORD])->orderBy('ru');
+        if ($lessonId){
+            $query->andWhere(['lesson_id' => $lessonId]);
+        }
         if ($search && strlen(trim($search)) > 0){
             $search = trim($search);
             $query = $query->andWhere(["LIKE", "LOWER(ru)", mb_strtolower($search, "UTF-8")]);
@@ -74,9 +77,11 @@ class SiteController extends Controller
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
+        $lessons = Lesson::find()->all();
         return $this->render('dictionary',[
             'dataProvider' => $dataProvider,
-            'search' => $search
+            'search' => $search,
+            'lessons' => $lessons,
         ]);
     }
 
